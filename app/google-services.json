@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "245965729732",
+    "firebase_url": "https://cardless-408ff.firebaseio.com",
+    "project_id": "cardless-408ff",
+    "storage_bucket": "cardless-408ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245965729732:android:69e6ef9bd5db966c",
+        "android_client_info": {
+          "package_name": "webconsole.co.in.cardless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245965729732-vjtouen69inqcj003ckomjv00j1f0b3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVOuCQreCzBoXO0xY93MqRrXk4TmfeIfw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
