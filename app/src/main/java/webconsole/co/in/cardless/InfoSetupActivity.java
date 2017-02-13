@@ -16,11 +16,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class InfoSetupActivity extends AppCompatActivity {
 
-    private EditText mobNum, accNum, codeText;
-    private DatabaseReference databaseReference;
-    private FirebaseAuth auth;
 
 
+
+    InfoSetupActivity(){
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,60 +30,9 @@ public class InfoSetupActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mobNum = (EditText) findViewById(R.id.mobNum);
-        accNum = (EditText) findViewById(R.id.accNum);
-        codeText = (EditText) findViewById(R.id.ifscText);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        auth = FirebaseAuth.getInstance();
 
     }
 
-    private Runnable mMyRunnable = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            startActivity(new Intent(InfoSetupActivity.this, MainActivity.class));
-            finish();
-        }
-    };
 
-    public void setupData(View view) {
-        if(mobNum.getText().toString().equals("") || mobNum.getText().toString().length()<10){
-            Snackbar.make(view, "Please enter valid Mobile Number", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-        else if(accNum.getText().toString().equals("") || accNum.getText().toString().length()<15){
-            Snackbar.make(view, "Please enter valid Account Number", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-        else if(codeText.getText().toString().equals("") || codeText.getText().toString().length()<7){
-            Snackbar.make(view, "Please enter valid IFSC Number", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }else{
-            saveData(view);
-            Handler myHandler = new Handler();
-            myHandler.postDelayed(mMyRunnable, 1000);
-        }
-
-    }
-
-    private void saveData(View view) {
-        String mobNumber = mobNum.getText().toString().trim();
-        String accNumber = accNum.getText().toString().trim();
-        String codeTextVal = codeText.getText().toString().trim();
-
-        UserInformation userInformation = new UserInformation(mobNumber,accNumber,codeTextVal);
-        FirebaseUser user = auth.getCurrentUser();
-        databaseReference.child(user.getUid()).setValue(userInformation);
-        Snackbar.make(view, "Information Saved", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-
-    }
-
-    public void getIFSC(View view) {
-        Snackbar.make(view, "Not implemented yet", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
 }

@@ -3,12 +3,109 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="harshmathur.webconsole.co.in.cardpay.SettingsFragment">
+    tools:context="webconsole.co.in.cardless.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <?xml version="1.0" encoding="utf-8"?>
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="screen for settings" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_info_setup"
+        android:padding="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="Enter Mobile Number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="textStart" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:maxLength="10"
+                android:id="@+id/mobNum"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:text="Enter Account Number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="textStart" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:maxLength="15"
+                android:id="@+id/accNum"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:text="Enter IFSC Code"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    android:textAlignment="textStart" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:text="Search IFSC"
+                    android:background="@android:color/transparent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textSize="14sp"
+                    android:textColor="#2196f3"
+                    android:onClick="getIFSC"/>
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapCharacters|textNoSuggestions"
+                android:ems="10"
+                android:maxLength="7"
+                android:id="@+id/ifscText"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:text="UPDATE"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/updateSetup"
+                android:onClick="setupData"
+                android:background="#2196f3"
+                android:elevation="5dp"
+                style="@style/FirebaseUI.Button"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
 
 </FrameLayout>

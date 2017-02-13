@@ -1,7 +1,10 @@
 package webconsole.co.in.cardless;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import com.cooltechworks.creditcarddesign.CreditCardUtils;
 import com.cooltechworks.creditcarddesign.CreditCardView;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class CardsFragment extends Fragment {
@@ -45,7 +49,7 @@ public class CardsFragment extends Fragment {
 
         String name = "Harsh Mathur";
         String cvv = "420";
-        String expiry = "01/19";
+        String expiry = "01/20";
         String cardNumber = "4052424242424242";
 
         sampleCreditCardView.setCVV(cvv);
@@ -97,12 +101,13 @@ public class CardsFragment extends Fragment {
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
-//            Debug.printToast("Result Code is OK", getApplicationContext());
-
             String name = data.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME);
             String cardNumber = data.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER);
             String expiry = data.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY);
             String cvv = data.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV);
+
+            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("infoondata-userinfo", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
 
             if (reqCode == CREATE_NEW_CARD) {
 
