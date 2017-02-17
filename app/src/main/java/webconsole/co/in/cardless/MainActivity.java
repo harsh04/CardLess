@@ -25,6 +25,7 @@ import com.cooltechworks.creditcarddesign.CardEditActivity;
 import com.cooltechworks.creditcarddesign.CreditCardUtils;
 import com.cooltechworks.creditcarddesign.CreditCardView;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,12 +33,10 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-
     @Override
     protected void onRestart() {
         super.onRestart();
-       // startActivity(new Intent(MainActivity.this,UnlockActivity.class));
+        startActivity(new Intent(MainActivity.this,UnlockActivity.class));
     }
 
     @Override
@@ -64,13 +63,21 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         SharedPreferences sharedPreferences = getSharedPreferences("infoondata-userinfo", Context.MODE_PRIVATE);
+        if((sharedPreferences.getString("username","").equals("")) || (sharedPreferences.getString("emailAddr","").equals(""))){
+            SettingsFragment settingsFragment = new SettingsFragment();
+            manager.beginTransaction().replace(
+                    R.id.fragment_main,
+                    settingsFragment,
+                    settingsFragment.getTag()
+            ).commit();
+        }
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View hView =  navigationView.getHeaderView(0);
         TextView nav_user_name = (TextView)hView.findViewById(R.id.user_name);
         nav_user_name.setText(sharedPreferences.getString("username",""));
         TextView nav_user_email = (TextView)hView.findViewById(R.id.user_email);
-        nav_user_email.setText(sharedPreferences.getString("emailId",""));
+        nav_user_email.setText(sharedPreferences.getString("emailAddr",""));
 
         navigationView.setNavigationItemSelectedListener(this);
 
