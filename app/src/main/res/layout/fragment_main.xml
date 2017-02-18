@@ -19,8 +19,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/cardview_default_radius"
-            android:onClick="makePayment">
+            app:cardCornerRadius="@dimen/cardview_default_radius">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void recievePayment(View view) {
-
+        startActivity(new Intent(MainActivity.this,RecievePaymentActivity.class));
     }
 
 
