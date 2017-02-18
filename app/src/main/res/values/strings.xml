@@ -28,5 +28,6 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
     <string name="title_activity_info_setup">InfoSetupActivity</string>
+    <string name="edittext_hint"><font size="12">Amount</font></string>
 
 </resources>
