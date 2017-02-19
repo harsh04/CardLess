@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,13 +21,16 @@ public class RecievePaymentActivity extends AppCompatActivity {
     final Context c = this;
     private EditText userInputDialogEditText;
     ProgressBar progressBar;
+    String url, amtValue, userNumber;
+    EditText userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recieve_payment);
         qrImg = (ImageView) findViewById(R.id.dispQR);
         def = (ImageView) findViewById(R.id.defQR);
-        //value = (EditText) findViewById(R.id.amtVal);
+        userID = (EditText) findViewById(R.id.useridNum);
+        userNumber = userID.getText().toString().trim();
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
         qrImg.setVisibility(View.INVISIBLE);
@@ -54,12 +58,8 @@ public class RecievePaymentActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
-                        String url = "https://api.qrserver.com/v1/create-qr-code/?data="+userInputDialogEditText.getText().toString().trim()+"&amp;size=100x100";
-                        def.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
-                        new ImageLoadTask(url, qrImg).execute();
-                        Handler myHandler = new Handler();
-                        myHandler.postDelayed(mMyRunnable, 1000);
+                        url = "https://api.qrserver.com/v1/create-qr-code/?data="+userInputDialogEditText.getText().toString().trim()+"&amp;size=100x100";
+                        amtValue = userInputDialogEditText.getText().toString().trim();
                     }
                 })
 
@@ -77,9 +77,21 @@ public class RecievePaymentActivity extends AppCompatActivity {
     //dialogbox with edittext and button
     public void generateQRCODE(View view) {
         loadDialogForm();
+        def.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        new ImageLoadTask(url, qrImg).execute();
+        Handler myHandler = new Handler();
+        myHandler.postDelayed(mMyRunnable, 1000);
     }
 
     public void requestMoney(View view) {
         loadDialogForm();
+    }
+
+    public void passScreen(View view) {
+        if(userNumber.equals("") || userNumber.length()<10){
+            Snackbar.make(view, "Enter Valid Mobile Number", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 }
