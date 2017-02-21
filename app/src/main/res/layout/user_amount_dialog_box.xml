@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_dialog_layout_design_user_input"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="250dp"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Rupees"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -19,10 +20,9 @@
         android:layout_height="wrap_content"
         android:hint="Amount"
         android:textAlignment="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
-        android:layout_marginBottom="20dp"
         android:maxLines="1"
         android:maxLength="4"
         android:inputType="number" />
