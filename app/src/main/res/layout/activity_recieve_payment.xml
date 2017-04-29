@@ -105,7 +105,7 @@
                         android:layout_weight="1"
                         android:id="@+id/defQR"
                         android:visibility="visible"
-                        android:src="@drawable/defaultqr"
+                        android:src="@drawable/bardef"
                         />
                     <ProgressBar
                         android:layout_width="wrap_content"
