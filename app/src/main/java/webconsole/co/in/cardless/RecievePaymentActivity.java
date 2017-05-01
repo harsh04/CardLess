@@ -2,6 +2,7 @@ package webconsole.co.in.cardless;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -53,7 +54,7 @@ public class RecievePaymentActivity extends AppCompatActivity implements View.On
 
     public boolean loadDialogForm(){
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(c);
-        View mView = layoutInflaterAndroid.inflate(R.layout.user_amount_dialog_box, null);
+        final View mView = layoutInflaterAndroid.inflate(R.layout.user_amount_dialog_box, null);
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(c);
         alertDialogBuilderUserInput.setView(mView);
 
@@ -62,8 +63,13 @@ public class RecievePaymentActivity extends AppCompatActivity implements View.On
                 .setCancelable(false)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
-                        url = "https://api.qrserver.com/v1/create-qr-code/?data="+userInputDialogEditText.getText().toString().trim()+"&amp;size=100x100";
-                        amtValue = userInputDialogEditText.getText().toString().trim();
+                        if(Integer.valueOf(userInputDialogEditText.getText().toString().trim())<=0 || Integer.valueOf(userInputDialogEditText.getText().toString().trim())>=5000){
+                            Snackbar.make(mView, "Valid Amount range from Rs.1 to Rs.4999", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }else{
+                            loadPasswordForm();
+
+                        }
 
                     }
                 })
@@ -82,7 +88,7 @@ public class RecievePaymentActivity extends AppCompatActivity implements View.On
 
     public void loadPasswordForm(){
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(c);
-        View mView = layoutInflaterAndroid.inflate(R.layout.user_password_dialog_box, null);
+        final View mView = layoutInflaterAndroid.inflate(R.layout.user_password_dialog_box, null);
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(c);
         alertDialogBuilderUserInput.setView(mView);
 
@@ -91,11 +97,80 @@ public class RecievePaymentActivity extends AppCompatActivity implements View.On
                 .setCancelable(false)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
-                        //TODO: make this work
+                       loadCards();
                     }
                 })
 
                 .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
+    }
+
+    public void loadCards(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(c);
+        final View mView = layoutInflaterAndroid.inflate(R.layout.get_card_list, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(c);
+        alertDialogBuilderUserInput.setView(mView);
+
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        enterOTP();
+                    }
+                })
+
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
+    }
+    public void enterOTP(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(c);
+        final View mView = layoutInflaterAndroid.inflate(R.layout.user_otp_dialog_box, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(c);
+        alertDialogBuilderUserInput.setView(mView);
+
+        userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        userSuccess();
+                    }
+                })
+
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
+    }
+    public void userSuccess(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(c);
+        final View mView = layoutInflaterAndroid.inflate(R.layout.user_success, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(c);
+        alertDialogBuilderUserInput.setView(mView);
+
+        userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setNegativeButton("Done",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 dialogBox.cancel();
@@ -146,9 +221,8 @@ public class RecievePaymentActivity extends AppCompatActivity implements View.On
                     Snackbar.make(v, "Enter a valid Mobile Number", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }else {
-                    if(loadDialogForm()){
-                        loadPasswordForm();
-                    }
+                    loadDialogForm();
+
                 }
                 break;
             case R.id.viaLink:
@@ -157,12 +231,19 @@ public class RecievePaymentActivity extends AppCompatActivity implements View.On
                 }
                 break;
             case R.id.viaQR:
-                loadDialogForm();
+                //loadDialogForm();
+                SharedPreferences sharedPreferences = getSharedPreferences("infoondata-userinfo", Context.MODE_PRIVATE);
+                String n = sharedPreferences.getString("username","");
+                String m = sharedPreferences.getString("mobNum","");
+                String e = sharedPreferences.getString("emailAddr","");
+                String a = sharedPreferences.getString("accNumber","");
+                String c = sharedPreferences.getString("codeTextVal","");
+                url = "https://api.qrserver.com/v1/create-qr-code/?data="+n+m+e+a+c+"&amp;size=100x100";
                 def.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 new ImageLoadTask(url, qrImg).execute();
                 Handler myHandler = new Handler();
-                myHandler.postDelayed(mMyRunnable, 1000);
+                myHandler.postDelayed(mMyRunnable, 500);
                 break;
             default:
                         break;

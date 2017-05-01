@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -29,7 +33,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class CardsFragment extends Fragment {
 
     private final int CREATE_NEW_CARD = 10;
-    SharedPreferences sharedPreferences;
     private LinearLayout cardContainer;
     private Button addCardButton;
     private DatabaseReference databaseReference;
@@ -138,8 +141,8 @@ public class CardsFragment extends Fragment {
             String expiry = data.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY);
             String cvv = data.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV);
             Toast.makeText(getActivity(), name+"***"+cardNumber, Toast.LENGTH_LONG).show();
-            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("infoondata-userinfo", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
 
             if (reqCode == CREATE_NEW_CARD) {
 
@@ -173,12 +176,39 @@ public class CardsFragment extends Fragment {
 
     }
     private void saveUserInfo(){
-        sharedPreferences = getContext().getSharedPreferences("infoondata-userinfo", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("infoondata-userinfo", Context.MODE_PRIVATE);
+        int val0 = Integer.parseInt(sharedPreferences.getString("digit0",""));
+        int val1 = Integer.parseInt(sharedPreferences.getString("digit1",""));
+        int val2 = Integer.parseInt(sharedPreferences.getString("digit2",""));
+        int val3 = Integer.parseInt(sharedPreferences.getString("digit3",""));
+        String passKey = val0+""+val1+""+val2+""+val3;
+        String enc_name = null;
+        String enc_cvv = null;
+        String enc_card = null;
+        String enc_exp = null;
+        try {
+            //put pwd here
+            AESAlgorithm aesAlgo=new AESAlgorithm(passKey);
+
+            //put account here for encryption
+            enc_name=aesAlgo.encrypt(sharedPreferences.getString("username",""));
+             enc_cvv=aesAlgo.encrypt("360");
+             enc_card=aesAlgo.encrypt("58293047182947");
+             enc_exp=aesAlgo.encrypt("03/30");
+
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         CardInformation cardInformation = new CardInformation();
-        cardInformation.setName("Harsh online");
-        cardInformation.setCvv("123");
-        cardInformation.setCardNumber("58293047182947");
-        cardInformation.setExpiry("03/30");
+        cardInformation.setName(enc_name);
+        cardInformation.setCvv(enc_cvv);
+        cardInformation.setCardNumber(enc_card);
+        cardInformation.setExpiry(enc_exp);
         databaseReference.child(sharedPreferences.getString("mobNum","")).setValue(cardInformation);
         Toast.makeText(getContext(),"Info saved",Toast.LENGTH_LONG).show();
     }

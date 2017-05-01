@@ -10,7 +10,7 @@
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Password"
+        android:text="Enter OTP"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -22,8 +22,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="30dp"
-        android:hint="PIN"
-        android:inputType="number"
+        android:inputType="textShortMessage|number|numberPassword"
         android:maxLength="4"
         android:maxLines="1"
         android:selectAllOnFocus="true"
